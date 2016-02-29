@@ -11,18 +11,22 @@ void TranslateIR(decode_results *results)
   {
     case 0x01:
     MotorController(FirstServo, Increment);
+    InitializeEepromTimer(FirstServo);
     break;
     
     case 0x02:
     MotorController(FirstServo, Decrement);
+    InitializeEepromTimer(FirstServo);
     break;
 
     case 0x03:
     MotorController(SecondServo, Increment);
+    InitializeEepromTimer(SecondServo);
     break;
 
     case 0x04:
     MotorController(SecondServo, Decrement);
+    InitializeEepromTimer(SecondServo);
     break;
 
     case 0x05:

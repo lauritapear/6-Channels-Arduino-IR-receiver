@@ -17,6 +17,28 @@ void ReadEeprom()
 //  Serial.println("Servo2 value at start:");
 }
 
+void WriteEeprom(int servoMotor)
+{
+  if (servoMotor == FirstServo)
+  {
+  EEPROM.update(addressFirstServo, GetDutyCycle(FirstServo));
+  }
+  else
+  {
+     EEPROM.update(addressSecondServo, GetDutyCycle(SecondServo));
+  }
+}
+
+void CallBack1()
+{
+  WriteEeprom(FirstServo);
+}
+
+void CallBack2()
+{
+  WriteEeprom(SecondServo);
+}
+
 bool PositionValueOutOfRange(int ServoValue)
 {
   return (ServoValue < DUTY2_MIN)||(ServoValue > DUTY1_MAX);

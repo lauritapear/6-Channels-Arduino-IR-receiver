@@ -15,7 +15,5 @@ void MonitorRelayButton();
 void MotorController(int servoMotor, int option);
 void MoveMotor1(int option);
 void MoveMotor2(int option);
-//void MonitorMotor1Buttons();
-//void MonitorMotor2Buttons();
-
+unsigned int GetDutyCycle(int servoMotor);
 #endif

@@ -1,3 +1,5 @@
+#include <Event.h>
+#include <Timer.h>
 #include <EEPROM.h>
 #include <Servo.h>
 #include <IRremote.h>
@@ -12,6 +14,9 @@ int RECV_PIN = 11;
 int ledPin = 13;
 int relayOutputPin = 8;
 
+Timer eepromWriteServo1Timer;
+Timer eepromWriteServo2Timer;
+
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
@@ -19,6 +24,18 @@ void InitializePins() {
   
     pinMode(relayOutputPin, OUTPUT);
     pinMode(ledPin, OUTPUT);
+}
+
+void InitializeEepromTimer(int servoMotor)
+{
+  if (servoMotor == FirstServo)
+  {
+  eepromWriteServo1Timer.after(600, CallBack1);
+  }
+  else
+  {
+   eepromWriteServo2Timer.after(600, CallBack2);
+  }
 }
 
 void setup() {
@@ -35,6 +52,8 @@ void setup() {
 }
 
 void loop() {
+  eepromWriteServo1Timer.update();
+  eepromWriteServo2Timer.update();
     
     if (irrecv.decode(&results)) {
 

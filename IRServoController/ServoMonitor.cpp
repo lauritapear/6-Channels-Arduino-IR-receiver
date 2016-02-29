@@ -115,3 +115,15 @@ void MoveMotor2(int option)
     MonitorMotorDecrementButton(&dutyCycle2, DUTY2_MIN, WriteServo2);
     }
 }
+
+unsigned int GetDutyCycle(int servoMotor)
+{
+  if (servoMotor == FirstServo)
+  {
+    return dutyCycle1;
+  }else
+  {
+    return dutyCycle2;
+  }
+}
+

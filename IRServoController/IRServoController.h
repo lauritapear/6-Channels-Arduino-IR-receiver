@@ -2,6 +2,9 @@
 #ifndef IRSERVOCONTROLLER_H
 #define IRSERVOCONTROLLER_H
 
+#include <Event.h>
+#include <Timer.h>
+
 #define CENTERED_DUTY 90
 #define DUTY_DELTA 5
 #define DUTY1_MAX 160
@@ -22,5 +25,7 @@ enum
    Decrement,
    MaxOption 
 };
+
+void InitializeEepromTimer(int servoMotor);
 
 #endif
