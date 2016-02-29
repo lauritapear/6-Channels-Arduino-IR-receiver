@@ -14,8 +14,8 @@ static unsigned int dutyCycle1Counter = 0;
 static unsigned int periodCounter = 0;
 static unsigned int dutyCycle2Counter = 0;
 static bool relayState = 0;
-static unsigned int dutyCycle1 = CENTERED_DUTY1;
-static unsigned int dutyCycle2 = CENTERED_DUTY2;
+static unsigned int dutyCycle1 = CENTERED_DUTY;
+static unsigned int dutyCycle2 = CENTERED_DUTY;
 
 Servo servo1;
 Servo servo2;
@@ -23,14 +23,19 @@ Servo servo2;
 void AttachServos()
 {
    servo1.attach(10);
-    servo2.attach(11);
+   servo2.attach(11);
 }
-void SetInitialValuesForServoMotors()
+
+void WriteServoServoPosition(int theServo, int dutyCycle)
 {
-    servo1.write(dutyCycle1);
-    delay(10);
-    servo2.write(dutyCycle2);
-    delay(10);
+  if (theServo == FirstServo)
+  {
+    WriteServo1(dutyCycle);
+  }
+  else if (theServo == SecondServo)
+  {
+    WriteServo2(dutyCycle);
+  }
 }
 
 void WriteServo1(int dutyCycle)
@@ -65,12 +70,12 @@ void MonitorMotorDecrementButton(unsigned int *dutyCycle, unsigned int dutyMin, 
 
 void MonitorCenterButton()
 {
-        dutyCycle1 = CENTERED_DUTY1;
-        dutyCycle2 = CENTERED_DUTY2;
+        dutyCycle1 = CENTERED_DUTY;
+        dutyCycle2 = CENTERED_DUTY;
         WriteServo1(dutyCycle1);
         delay(10);
         WriteServo2(dutyCycle2);
-        delay(10);
+        delay(10);      
 }
 
 void MonitorRelayButton()

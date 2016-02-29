@@ -2,6 +2,7 @@
 #include <IRremoteInt.h>
 #include "ServoMonitor.h"
 #include "IRServoController.h"
+#include "EEPROMManager.h"
 
 void TranslateIR(decode_results *results)
 {

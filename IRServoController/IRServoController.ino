@@ -1,3 +1,4 @@
+#include <EEPROM.h>
 #include <Servo.h>
 #include <IRremote.h>
 #include <IRremoteInt.h>
@@ -5,6 +6,7 @@
 #include "IRServoController.h"
 #include "ServoMonitor.h"
 #include "IRManager.h"
+#include "EEPROMManager.h"
 
 int RECV_PIN = 11;
 int ledPin = 13;
@@ -26,8 +28,9 @@ void setup() {
     
     Serial.begin(9600);
     irrecv.enableIRIn();
+
+    SetServosToInitialPosition();
     
-    SetInitialValuesForServoMotors();
     wdt_enable(WDTO_1S); //Do we really need this?
 }
 

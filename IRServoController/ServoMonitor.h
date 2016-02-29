@@ -1,9 +1,10 @@
 
 #ifndef SERVOMONITOR_H
 #define SERVOMONITOR_H
+#include <Servo.h>
 
 void AttachServos();
-void SetInitialValuesForServoMotors();
+void WriteServoServoPosition(int theServo, int dutyCycle);
 void WriteServo1(int dutyCycle);
 void WriteServo2(int dutyCycle);
 void MonitorMotorIncrementButton(unsigned int *dutyCycle, unsigned int dutyMax, void (*WriteServo)(int duty));
