@@ -82,11 +82,6 @@ void setup() {
 void loop() {
   eepromWriteServo1Timer.update();
   eepromWriteServo2Timer.update();
-
-    if (MicroIsReadyToSleep())
-    {
-      sleepNow();
-    }
     
     if (irrecv.decode(&results)) {
 

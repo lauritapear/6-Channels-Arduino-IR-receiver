@@ -37,6 +37,15 @@ enum
    MaxOption 
 };
 
+enum
+{
+   Servo1Flag = 0,
+   Servo2Flag,
+   CenterFlag,
+   RelayFlag,
+   MaxFlag 
+};
+
 void InitializeEepromTimer(int servoMotor);
 void sleepNow();
 

@@ -1,6 +1,7 @@
 #include <EEPROM.h>
 #include "ServoMonitor.h"
 #include "IRServoController.h"
+#include "EEPROMManager.h"
 
 extern "C" {
  #include <stddef.h>
@@ -14,6 +15,8 @@ int valueServo1;
 int valueServo2;
 bool Servo1ReadyToSleep = true;
 bool Servo2ReadyToSleep = true;
+bool CenterReadyToSleep = true;
+bool RelayReadyToSleep = true;
 
 bool GetSleepFlag(int servoMotor);
 
@@ -25,7 +28,8 @@ void ReadEeprom()
 
 bool MicroIsReadyToSleep()
 {
-  return GetSleepFlag(FirstServo) && GetSleepFlag(SecondServo);
+  return GetSleepFlag(Servo1Flag) && GetSleepFlag(Servo2Flag)
+  && GetSleepFlag(CenterFlag)&& GetSleepFlag(RelayFlag);
 }
 
 void WriteEeprom(int servoMotor)
@@ -38,6 +42,11 @@ void WriteEeprom(int servoMotor)
   {
   EEPROM.update(addressSecondServo, GetDutyCycle(SecondServo));
   }
+
+    if (MicroIsReadyToSleep())
+    {
+      sleepNow();
+    }
 }
 
 void CallBack1()
@@ -78,27 +87,48 @@ void SetServosToInitialPosition()
     }
 }
 
-void SetSleepFlag(int servoMotor, bool value)
+void SetSleepFlag(int flag, bool value)
 {
-  if (servoMotor == FirstServo)
+  switch(flag)
   {
+  case Servo1Flag:
   Servo1ReadyToSleep = value;
-  }
-  else
-  {
-   Servo2ReadyToSleep = value;
+  break;  
+
+  case Servo2Flag:
+  Servo1ReadyToSleep = value;
+  break;  
+
+  case CenterFlag:
+  CenterReadyToSleep = value;
+  break; 
+
+  case RelayFlag:
+  RelayReadyToSleep = value;
+  break; 
   }
 }
 
-bool GetSleepFlag(int servoMotor)
+bool GetSleepFlag(int flag)
 {
-  if (servoMotor == FirstServo)
+  switch(flag)
   {
+  case Servo1Flag:
   return Servo1ReadyToSleep;
+  break;  
+
+  case Servo2Flag:
+  return Servo2ReadyToSleep;
+  break;  
+
+  case CenterFlag:
+  return CenterReadyToSleep;
+  break; 
+
+  case RelayFlag:
+  return RelayReadyToSleep;
+  break; 
   }
-  else
-  {
-   return Servo2ReadyToSleep;
-  }
+
 }
 

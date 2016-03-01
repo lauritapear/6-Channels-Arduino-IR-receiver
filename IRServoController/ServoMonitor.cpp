@@ -2,6 +2,7 @@
 #include "ServoMonitor.h"
 #include "IRServoController.h"
 #include "Arduino.h"
+#include "EEPROMManager.h"
 #include <Servo.h>
 
 extern "C" {
@@ -70,18 +71,29 @@ void MonitorMotorDecrementButton(unsigned int *dutyCycle, unsigned int dutyMin, 
 
 void MonitorCenterButton()
 {
+        SetSleepFlag(CenterFlag, false);
         dutyCycle1 = CENTERED_DUTY;
         dutyCycle2 = CENTERED_DUTY;
         WriteServo1(dutyCycle1);
         delay(10);
         WriteServo2(dutyCycle2);
-        delay(10);      
+        delay(10); 
+        SetSleepFlag(CenterFlag, true);   
+     if (MicroIsReadyToSleep())
+    {
+      sleepNow();
+    }  
 }
 
 void MonitorRelayButton()
 {
         relayState = !relayState;
         digitalWrite(RELAY_OUTPUT_PIN, relayState);
+           SetSleepFlag(RelayFlag, true);   
+     if (MicroIsReadyToSleep())
+    {
+      sleepNow();
+    } 
 }
 
 void MotorController(int servoMotor, int option)
