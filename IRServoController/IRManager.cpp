@@ -6,52 +6,36 @@
 
 void TranslateIR(decode_results *results)
 {
-
   switch(results->value)
   {
-    case 0x01:
+    case INCREMENT_BUTTON_ONE_SIGNAL:
     MotorController(FirstServo, Increment);
     InitializeEepromTimer(FirstServo);
     break;
     
-    case 0x02:
+    case DECREMENT_BUTTON_ONE_SIGNAL:
     MotorController(FirstServo, Decrement);
     InitializeEepromTimer(FirstServo);
     break;
 
-    case 0x03:
+    case INCREMENT_BUTTON_TWO_SIGNAL:
     MotorController(SecondServo, Increment);
     InitializeEepromTimer(SecondServo);
     break;
 
-    case 0x04:
+    case DECREMENT_BUTTON_TWO_SIGNAL:
     MotorController(SecondServo, Decrement);
     InitializeEepromTimer(SecondServo);
     break;
 
-    case 0x05:
+    case CENTER_BUTTON_SIGNAL:
     MonitorCenterButton();
     break;
 
-    case 0x06:
+    case RELAY_BUTTON_SIGNAL:
     MonitorRelayButton();
     break;
   }
   
 }
 
-
-//if (irrecv.decode(&results)) {
-//        //    digitalWrite(13, HIGH);
-//        if(results.value == 0xC40BD816)
-//        {
-//            digitalWrite(13, HIGH);
-//        }
-//        else if(results.value == 0x4AB0F7B5)
-//        {
-//            digitalWrite(13, LOW);
-//        }
-//        Serial.println(results.value, HEX);
-//        irrecv.resume(); // Receive the next value
-//    }
-//    delay(100);

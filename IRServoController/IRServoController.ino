@@ -4,15 +4,16 @@
 #include <Servo.h>
 #include <IRremote.h>
 #include <IRremoteInt.h>
+#include <PinChangeInt.h>
 #include <avr/wdt.h>
+#include <avr/power.h>
+#include <avr/sleep.h>
 #include "IRServoController.h"
 #include "ServoMonitor.h"
 #include "IRManager.h"
 #include "EEPROMManager.h"
+//#include "SleepModeManager.h"
 
-int RECV_PIN = 11;
-int ledPin = 13;
-int relayOutputPin = 8;
 
 Timer eepromWriteServo1Timer;
 Timer eepromWriteServo2Timer;
@@ -22,8 +23,8 @@ decode_results results;
 
 void InitializePins() {
   
-    pinMode(relayOutputPin, OUTPUT);
-    pinMode(ledPin, OUTPUT);
+    pinMode(RELAY_OUTPUT_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
 }
 
 void InitializeEepromTimer(int servoMotor)
@@ -31,11 +32,36 @@ void InitializeEepromTimer(int servoMotor)
   if (servoMotor == FirstServo)
   {
   eepromWriteServo1Timer.after(600, CallBack1);
+  SetSleepFlag(FirstServo,false);
   }
   else
   {
    eepromWriteServo2Timer.after(600, CallBack2);
+   SetSleepFlag(SecondServo,false);
   }
+}
+
+void pinInterrupt()
+{
+  uint8_t latest_interrupted_pin = PCintPort::arduinoPin;
+  Serial.println(latest_interrupted_pin);
+  Serial.println("Interrupt");
+  delay(20);
+
+  detachInterrupt(0);
+}
+
+void sleepNow()
+{
+  set_sleep_mode(SLEEP_MODE_PWR_SAVE);
+
+  attachPinChangeInterrupt(RECV_PIN, pinInterrupt, FALLING);
+
+  sleep_enable();
+  sleep_mode();   // Put the device to sleep:
+
+  // Upon waking up, sketch continues from this point.
+  sleep_disable();
 }
 
 void setup() {
@@ -49,6 +75,7 @@ void setup() {
     SetServosToInitialPosition();
     
     wdt_enable(WDTO_1S); //Do we really need this?
+    sleepNow();
 }
 
 void loop() {

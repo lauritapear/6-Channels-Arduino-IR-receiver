@@ -23,7 +23,7 @@ Servo servo2;
 void AttachServos()
 {
    servo1.attach(10);
-   servo2.attach(11);
+   servo2.attach(9);
 }
 
 void WriteServoServoPosition(int theServo, int dutyCycle)
@@ -81,6 +81,7 @@ void MonitorCenterButton()
 void MonitorRelayButton()
 {
         relayState = !relayState;
+        digitalWrite(RELAY_OUTPUT_PIN, relayState);
 }
 
 void MotorController(int servoMotor, int option)

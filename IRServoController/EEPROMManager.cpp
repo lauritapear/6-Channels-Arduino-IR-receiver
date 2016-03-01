@@ -2,19 +2,30 @@
 #include "ServoMonitor.h"
 #include "IRServoController.h"
 
+extern "C" {
+ #include <stddef.h>
+ #include <stdint.h>
+ #include <math.h>
+}
+
 int addressFirstServo = 0;
 int addressSecondServo = 0;
 int valueServo1;
 int valueServo2;
+bool Servo1ReadyToSleep = true;
+bool Servo2ReadyToSleep = true;
+
+bool GetSleepFlag(int servoMotor);
 
 void ReadEeprom()
 {
   valueServo1 = EEPROM.read(addressFirstServo);
   valueServo2 = EEPROM.read(addressSecondServo);
-//  Serial.print(valueServo1, DEC);
-//  Serial.println("Servo1 value at start:");
-//  Serial.print(valueServo2, DEC);
-//  Serial.println("Servo2 value at start:");
+}
+
+bool MotorAreReadyToSleep()
+{
+  return GetSleepFlag(FirstServo) && GetSleepFlag(SecondServo);
 }
 
 void WriteEeprom(int servoMotor)
@@ -25,7 +36,7 @@ void WriteEeprom(int servoMotor)
   }
   else
   {
-     EEPROM.update(addressSecondServo, GetDutyCycle(SecondServo));
+  EEPROM.update(addressSecondServo, GetDutyCycle(SecondServo));
   }
 }
 
@@ -65,5 +76,29 @@ void SetServosToInitialPosition()
     {
       WriteServoServoPosition(SecondServo, valueServo2);
     }
+}
+
+void SetSleepFlag(int servoMotor, bool value)
+{
+  if (servoMotor == FirstServo)
+  {
+  Servo1ReadyToSleep = value;
+  }
+  else
+  {
+   Servo2ReadyToSleep = value;
+  }
+}
+
+bool GetSleepFlag(int servoMotor)
+{
+  if (servoMotor == FirstServo)
+  {
+  return Servo1ReadyToSleep;
+  }
+  else
+  {
+   return Servo2ReadyToSleep;
+  }
 }
 
