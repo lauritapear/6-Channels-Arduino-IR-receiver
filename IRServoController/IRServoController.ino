@@ -12,7 +12,6 @@
 #include "ServoMonitor.h"
 #include "IRManager.h"
 #include "EEPROMManager.h"
-//#include "SleepModeManager.h"
 
 
 Timer eepromWriteServo1Timer;
@@ -58,10 +57,12 @@ void sleepNow()
   attachPinChangeInterrupt(RECV_PIN, pinInterrupt, FALLING);
 
   sleep_enable();
+  Serial.println("Going To sleep");
   sleep_mode();   // Put the device to sleep:
 
   // Upon waking up, sketch continues from this point.
   sleep_disable();
+  Serial.println("Waking Up");
 }
 
 void setup() {
@@ -81,12 +82,17 @@ void setup() {
 void loop() {
   eepromWriteServo1Timer.update();
   eepromWriteServo2Timer.update();
+
+    if (MicroIsReadyToSleep())
+    {
+      sleepNow();
+    }
     
     if (irrecv.decode(&results)) {
 
        TranslateIR(&results);
-        Serial.println(results.value, HEX);
-        irrecv.resume(); // Receive the next value
+       Serial.println(results.value, HEX);
+       irrecv.resume(); // Receive the next value
     }
     delay(100);
     wdt_reset();

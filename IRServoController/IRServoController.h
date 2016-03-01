@@ -38,5 +38,6 @@ enum
 };
 
 void InitializeEepromTimer(int servoMotor);
+void sleepNow();
 
 #endif

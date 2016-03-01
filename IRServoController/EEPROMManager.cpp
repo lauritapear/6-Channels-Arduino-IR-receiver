@@ -23,7 +23,7 @@ void ReadEeprom()
   valueServo2 = EEPROM.read(addressSecondServo);
 }
 
-bool MotorAreReadyToSleep()
+bool MicroIsReadyToSleep()
 {
   return GetSleepFlag(FirstServo) && GetSleepFlag(SecondServo);
 }

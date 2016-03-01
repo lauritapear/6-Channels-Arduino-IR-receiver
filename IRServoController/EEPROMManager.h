@@ -2,6 +2,7 @@
 #define EEPROMMANAGER_H
 
 void ReadEeprom();
+bool MicroIsReadyToSleep();
 void SetServosToInitialPosition();
 void WriteEeprom(int servoMotor);
 void CallBack1();
