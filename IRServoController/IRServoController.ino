@@ -30,12 +30,12 @@ void InitializeEepromTimer(int servoMotor)
 {
   if (servoMotor == FirstServo)
   {
-  eepromWriteServo1Timer.after(600, CallBack1);
+  eepromWriteServo1Timer.after(60, CallBack1);
   SetSleepFlag(FirstServo,false);
   }
   else
   {
-   eepromWriteServo2Timer.after(600, CallBack2);
+   eepromWriteServo2Timer.after(60, CallBack2);
    SetSleepFlag(SecondServo,false);
   }
 }
@@ -54,7 +54,7 @@ void sleepNow()
 {
   set_sleep_mode(SLEEP_MODE_PWR_SAVE);
 
-  attachPinChangeInterrupt(RECV_PIN, pinInterrupt, FALLING);
+  attachPinChangeInterrupt(RECV_PIN, pinInterrupt, FALLING);  deattachPinChangeInterrupt(RECV_PIN);
 
   sleep_enable();
   Serial.println("Going To sleep");
@@ -76,7 +76,7 @@ void setup() {
     SetServosToInitialPosition();
     
     wdt_enable(WDTO_1S); //Do we really need this?
-    sleepNow();
+//    sleepNow();
 }
 
 void loop() {
